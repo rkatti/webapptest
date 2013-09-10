@@ -51,8 +51,9 @@ public class PhoneBookImpl implements PhoneBook {
 			cn = DatabaseUtil.getConnection();
 			String selectSQL = "SELECT NAME, PHONENUMBER, ADDRESS FROM PHONEBOOK WHERE NAME = ?";
 			PreparedStatement preparedStatement = cn.prepareStatement(selectSQL);
-			preparedStatement.setString(0, firstName + " " + lastName);
-			ResultSet rs = preparedStatement.executeQuery(selectSQL );
+			System.out.println(firstName + lastName);
+			preparedStatement.setString(1, firstName + " " + lastName);
+			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				person.name = rs.getString("NAME");
 				person.phoneNumber = rs.getString("PHONENUMBER");	
@@ -70,7 +71,7 @@ public class PhoneBookImpl implements PhoneBook {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null; 
+		return person; 
 		
 		
 	}
@@ -104,13 +105,8 @@ public class PhoneBookImpl implements PhoneBook {
 			System.out.println("Name : " + person.name + " : Address : " + person.address + " : phone : "  + person.phoneNumber);
 		}
 		// TODO: find Cynthia Smith and print out just her entry
-	    it = (Iterator) phoneBookImpl.people.iterator();
-		while(it.hasNext()) {
-			Person person = (Person) it.next();
-			if ("Cynthia Smith".equals(person.name)) {
-			   System.out.println("Found Name : " + person.name + " : Address : " + person.address + " : phone : "  + person.phoneNumber);
-			}
-		}
+		Person cynthia = phoneBookImpl.findPerson("Cynthia", "Smith");
+		System.out.println("Found Name : " + cynthia.name + " : Address : " + cynthia.address + " : phone : "  + cynthia.phoneNumber);
 		
 		// TODO: insert the new person objects into the database
 		Person newPerson3 = new Person();
@@ -119,8 +115,6 @@ public class PhoneBookImpl implements PhoneBook {
 		newPerson3.phoneNumber = "(248) 888-4567";
 		phoneBookImpl.addPerson(newPerson3);
 
-	
-	
 	
 	}
 }
